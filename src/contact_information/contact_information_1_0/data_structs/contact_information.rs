@@ -395,22 +395,22 @@ pub enum RoleOfContactPerson {
 impl RoleOfContactPerson {
     pub fn get_semantic_id(&self) -> String {
         match self {
-            RoleOfContactPerson::AdministrativeContact => return String::from("0173-1#07-AAS927#001"),
-            RoleOfContactPerson::CommercialContact => return String::from("0173-1#07-AAS928#001"),
-            RoleOfContactPerson::OtherContact => return String::from("0173-1#07-AAS929#001"),
-            RoleOfContactPerson::HazardousGoodsContact => return String::from("0173-1#07-AAS930#001"),
-            RoleOfContactPerson::TechnicalContact => return String::from("0173-1#07-AAS931#001")
+            RoleOfContactPerson::AdministrativeContact => String::from("0173-1#07-AAS927#001"),
+            RoleOfContactPerson::CommercialContact => String::from("0173-1#07-AAS928#001"),
+            RoleOfContactPerson::OtherContact => String::from("0173-1#07-AAS929#001"),
+            RoleOfContactPerson::HazardousGoodsContact => String::from("0173-1#07-AAS930#001"),
+            RoleOfContactPerson::TechnicalContact => String::from("0173-1#07-AAS931#001")
         }
     }
 
     pub fn from_semantic_id(semantic_id: &String) -> Option<RoleOfContactPerson> {
         match semantic_id.as_str() {
-            "173-1#07-AAS927#001" => return Some(RoleOfContactPerson::AdministrativeContact),
-            "0173-1#07-AAS928#001" => return Some(RoleOfContactPerson::CommercialContact),
-            "0173-1#07-AAS929#001" => return Some(RoleOfContactPerson::OtherContact),
-            "0173-1#07-AAS930#001" => return Some(RoleOfContactPerson::HazardousGoodsContact),
-            "0173-1#07-AAS931#001" => return Some(RoleOfContactPerson::TechnicalContact),
-            _ => return None
+            "173-1#07-AAS927#001" => Some(RoleOfContactPerson::AdministrativeContact),
+            "0173-1#07-AAS928#001" => Some(RoleOfContactPerson::CommercialContact),
+            "0173-1#07-AAS929#001" => Some(RoleOfContactPerson::OtherContact),
+            "0173-1#07-AAS930#001" => Some(RoleOfContactPerson::HazardousGoodsContact),
+            "0173-1#07-AAS931#001" => Some(RoleOfContactPerson::TechnicalContact),
+            _ => None
         }
     }
 }
