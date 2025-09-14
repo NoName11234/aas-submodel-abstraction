@@ -6,7 +6,7 @@ use crate::contact_information::contact_information_1_0::data_structs::{email::E
 /// contact the manufacturer or an authorised service provider, e.g. when a maintenance service is required.
 #[derive(PartialEq, Clone)]
 pub struct ContactInformation {
-    role_of_contact_person: Option<String>,
+    role_of_contact_person: Option<RoleOfContactPerson>,
     national_code: HashMap<String, String>,
     languages: Vec<Language>,
     time_zone: Option<String>,
@@ -61,11 +61,11 @@ impl ContactInformation {
         }
     }
 
-    pub fn set_role_of_contact_person(&mut self, role_of_contact_person: String) {
+    pub fn set_role_of_contact_person(&mut self, role_of_contact_person: RoleOfContactPerson) {
         self.role_of_contact_person = Some(role_of_contact_person);
     }
 
-    pub fn get_role_of_contact_person(&self) -> Option<&String> {
+    pub fn get_role_of_contact_person(&self) -> Option<&RoleOfContactPerson> {
         self.role_of_contact_person.as_ref()
     }
 

@@ -8,9 +8,9 @@ pub struct Phone {
 }
 
 impl Phone {
-    pub fn new() -> Phone {
+    pub fn new(telephone_number: HashMap<String, String>) -> Phone {
         Phone {
-            telephone_number: HashMap::new(),
+            telephone_number,
             type_of_phone: None,
             available_time: HashMap::new()
         }

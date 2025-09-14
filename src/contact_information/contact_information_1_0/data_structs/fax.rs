@@ -7,9 +7,9 @@ pub struct Fax {
 }
 
 impl Fax {
-    pub fn new() -> Fax {
+    pub fn new(fax_number: HashMap<String, String>) -> Fax {
         Fax {
-            fax_number: HashMap::new(),
+            fax_number,
             type_of_fax_number: None
         }
     }
