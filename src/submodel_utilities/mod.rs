@@ -17,12 +17,12 @@ pub fn convert_hashmap_to_multi_language_text_type_list(data: &HashMap<String, S
     multi_language_text_type_list
 }
 
-pub fn get_property<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Reference) -> Option<&'a Property> {
-    for submodel_element in submodel_elements {
+pub fn get_property<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Reference) -> Option<(usize, &'a Property)> {
+    for (index, submodel_element) in submodel_elements.iter().enumerate() {
         match submodel_element {
             SubmodelElement::Property(property) => {
                 if property.get_semantic_id() == Some(semantic_id) {
-                    return Some(property);
+                    return Some((index, property));
                 }
             },
             _ => {}
@@ -32,12 +32,12 @@ pub fn get_property<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id
     None
 }
 
-pub fn get_mutable_property<'a>(submodel_elements: &'a mut Vec<SubmodelElement>, semantic_id: &Reference) -> Option<&'a mut Property> {
-    for submodel_element in submodel_elements {
+pub fn get_mutable_property<'a>(submodel_elements: &'a mut Vec<SubmodelElement>, semantic_id: &Reference) -> Option<(usize, &'a mut Property)> {
+    for (index, submodel_element) in submodel_elements.iter_mut().enumerate() {
         match submodel_element {
             SubmodelElement::Property(property) => {
                 if property.get_semantic_id() == Some(semantic_id) {
-                    return Some(property);
+                    return Some((index, property));
                 }
             },
             _ => {}
@@ -47,12 +47,12 @@ pub fn get_mutable_property<'a>(submodel_elements: &'a mut Vec<SubmodelElement>,
     None
 }
 
-pub fn get_mlp<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Reference) -> Option<&'a MultiLanguageProperty> {
-    for submodel_element in submodel_elements {
+pub fn get_mlp<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Reference) -> Option<(usize, &'a MultiLanguageProperty)> {
+    for (index, submodel_element) in submodel_elements.iter().enumerate() {
         match submodel_element {
             SubmodelElement::MultiLanguageProperty(mlp) => {
                 if mlp.get_semantic_id() == Some(semantic_id) {
-                    return Some(mlp);
+                    return Some((index, mlp));
                 }
             },
             _ => {}
@@ -62,12 +62,12 @@ pub fn get_mlp<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Re
     None
 }
 
-pub fn get_mutable_mlp<'a>(submodel_elements: &'a mut Vec<SubmodelElement>, semantic_id: &Reference) -> Option<&'a mut MultiLanguageProperty> {
-    for submodel_element in submodel_elements {
+pub fn get_mutable_mlp<'a>(submodel_elements: &'a mut Vec<SubmodelElement>, semantic_id: &Reference) -> Option<(usize, &'a mut MultiLanguageProperty)> {
+    for (index, submodel_element) in submodel_elements.iter_mut().enumerate() {
         match submodel_element {
             SubmodelElement::MultiLanguageProperty(mlp) => {
                 if mlp.get_semantic_id() == Some(semantic_id) {
-                    return Some(mlp);
+                    return Some((index, mlp));
                 }
             },
             _ => {}
@@ -77,12 +77,12 @@ pub fn get_mutable_mlp<'a>(submodel_elements: &'a mut Vec<SubmodelElement>, sema
     None
 }
 
-pub fn get_smc<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Reference) -> Option<&'a SubmodelElementCollection> {
-    for submodel_element in submodel_elements {
+pub fn get_smc<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Reference) -> Option<(usize, &'a SubmodelElementCollection)> {
+    for (index, submodel_element) in submodel_elements.iter().enumerate() {
         match submodel_element {
             SubmodelElement::SubmodelElementCollection(smc) => {
                 if smc.get_semantic_id() == Some(semantic_id) {
-                    return Some(smc);
+                    return Some((index, smc));
                 }
             },
             _ => {}
@@ -92,12 +92,12 @@ pub fn get_smc<'a>(submodel_elements: &'a Vec<SubmodelElement>, semantic_id: &Re
     None
 }
 
-pub fn get_mutable_smc<'a>(submodel_elements: &'a mut Vec<SubmodelElement>, semantic_id: &Reference) -> Option<&'a mut SubmodelElementCollection> {
-    for submodel_element in submodel_elements {
+pub fn get_mutable_smc<'a>(submodel_elements: &'a mut Vec<SubmodelElement>, semantic_id: &Reference) -> Option<(usize, &'a mut SubmodelElementCollection)> {
+    for (index, submodel_element) in submodel_elements.iter_mut().enumerate() {
         match submodel_element {
             SubmodelElement::SubmodelElementCollection(smc) => {
                 if smc.get_semantic_id() == Some(semantic_id) {
-                    return Some(smc);
+                    return Some((index, smc));
                 }
             },
             _ => {}
