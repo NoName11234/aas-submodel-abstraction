@@ -19,7 +19,7 @@ use crate::contact_information::contact_information_1_0::template_submodel::sema
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::email::EMAIL_ID;
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::fax::FAX_ID;
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::ip_communication::IP_COMMUNICATION_ID;
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::phone::PHONE_ID;
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::phone::{PHONE_AVAILABLE_TIME, PHONE_ID, TELEPHONE_NUMBER, TYPE_OF_TELEPHONE};
 use crate::submodel_utilities::{convert_hashmap_to_multi_language_text_type_list, get_mutable_mlp, get_mutable_property, get_mutable_smc};
 
 pub struct ContactInformationWriter1_0 {
@@ -583,7 +583,61 @@ impl ContactInformationWriter1_0 {
     }
 
     fn map_phone_smc(template_phone_smc: &mut SubmodelElementCollection, phone_values: &Phone) -> Result<(), String> {
+        //map telephone number mlp
+        let key = Key::new(KeyType::GlobalReference, String::from(TELEPHONE_NUMBER));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
 
+        let optional_telephone_number_mlp = get_mutable_mlp(template_phone_smc.get_mut_value(), &semantic_id);
+
+        if optional_telephone_number_mlp.is_some() {
+            let (index, telephone_number_property) = optional_telephone_number_mlp.unwrap();
+
+            telephone_number_property.set_value(convert_hashmap_to_multi_language_text_type_list(phone_values.get_telephone_number()));
+        } else {
+            return Err(String::from("Unable to find template multilanguage property phone number."));
+        }
+
+        //map type of telephone property
+        let optional_type_of_telephone = phone_values.get_type_of_phone();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(TYPE_OF_TELEPHONE));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_type_of_telephone_property = get_mutable_property(template_phone_smc.get_mut_value(), &semantic_id);
+
+        if optional_type_of_telephone_property.is_some() {
+            let (index, telephone_property) = optional_type_of_telephone_property.unwrap();
+
+            if optional_type_of_telephone.is_some() {
+                telephone_property.set_value(optional_type_of_telephone.unwrap().get_semantic_id())
+            } else {
+                template_phone_smc.get_mut_value().remove(index);
+            }
+        } else {
+            return Err(String::from("Unable to find template property type of telephone."));
+        }
+
+        //map available time mlp
+        let optional_available_time = phone_values.get_available_time();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(PHONE_AVAILABLE_TIME));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_available_time_mlp = get_mutable_mlp(template_phone_smc.get_mut_value(), &semantic_id);
+
+        if optional_available_time_mlp.is_some() {
+            let (index, available_time_mlp) = optional_available_time_mlp.unwrap();
+
+            if optional_available_time.is_empty() {
+                template_phone_smc.get_mut_value().remove(index);
+            } else {
+                available_time_mlp.set_value(convert_hashmap_to_multi_language_text_type_list(optional_available_time))
+            }
+        } else {
+            return Err(String::from("Unable to find template property available time."));
+        }
+
+        Ok(())
     }
 
     fn map_fax_smc(template_fax_smc: &mut SubmodelElementCollection, fax_values: &Fax) -> Result<(), String> {
