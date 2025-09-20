@@ -205,7 +205,16 @@ impl ContactInformationWriter1_0 {
                 let (index, phone_smc) = optional_phone_smc.unwrap();
 
                 if phone_values.is_some() {
-                    Self::map_phone_smc(phone_smc, phone_values.unwrap());
+                    let result = Self::map_phone_smc(phone_smc, phone_values.unwrap());
+
+                    if result.is_err() {
+                        let error_message = String::from("Error in submodel element collection \"")
+                            .add("Phone")
+                            .add("\": ")
+                            .add(result.err().unwrap().as_str());
+
+                        return Err(error_message);
+                    }
                 } else {
                     contact_information_smc.get_mut_value().remove(index);
                 }
@@ -225,7 +234,16 @@ impl ContactInformationWriter1_0 {
                 let (index, fax_smc) = optional_fax_smc.unwrap();
 
                 if fax_values.is_some() {
-                    Self::map_fax_smc(fax_smc, fax_values.unwrap());
+                    let result = Self::map_fax_smc(fax_smc, fax_values.unwrap());
+
+                    if result.is_err() {
+                        let error_message = String::from("Error in submodel element collection \"")
+                            .add("Fax")
+                            .add("\": ")
+                            .add(result.err().unwrap().as_str());
+
+                        return Err(error_message);
+                    }
                 } else {
                     contact_information_smc.get_mut_value().remove(index);
                 }
@@ -245,7 +263,16 @@ impl ContactInformationWriter1_0 {
                 let (index, email_smc) = optional_email_smc.unwrap();
 
                 if email_values.is_some() {
-                    Self::map_email_smc(email_smc, email_values.unwrap());
+                    let result = Self::map_email_smc(email_smc, email_values.unwrap());
+
+                    if result.is_err() {
+                        let error_message = String::from("Error in submodel element collection \"")
+                            .add("Email")
+                            .add("\": ")
+                            .add(result.err().unwrap().as_str());
+
+                        return Err(error_message);
+                    }
                 } else {
                     contact_information_smc.get_mut_value().remove(index);
                 }
@@ -271,7 +298,16 @@ impl ContactInformationWriter1_0 {
                     for ip_communication_value in ip_communication_value_list {
                         let mut ip_communication_smc = ip_communication_template_smc.clone();
 
-                        Self::map_ip_communication(&mut ip_communication_smc, ip_communication_value);
+                        let result = Self::map_ip_communication(&mut ip_communication_smc, ip_communication_value);
+
+                        if result.is_err() {
+                            let error_message = String::from("Error in submodel element collection \"")
+                                .add(ip_communication_value.get_id_short().as_str())
+                                .add("\": ")
+                                .add(result.err().unwrap().as_str());
+
+                            return Err(error_message);
+                        }
 
                         contact_information_smc.get_mut_value().push(SubmodelElement::SubmodelElementCollection(ip_communication_smc));
                     }
@@ -546,19 +582,19 @@ impl ContactInformationWriter1_0 {
         Ok(())
     }
 
-    fn map_phone_smc(template_phone_smc: &mut SubmodelElementCollection, phone_values: &Phone) {
+    fn map_phone_smc(template_phone_smc: &mut SubmodelElementCollection, phone_values: &Phone) -> Result<(), String> {
 
     }
 
-    fn map_fax_smc(template_fax_smc: &mut SubmodelElementCollection, fax_values: &Fax) {
+    fn map_fax_smc(template_fax_smc: &mut SubmodelElementCollection, fax_values: &Fax) -> Result<(), String> {
 
     }
 
-    fn map_email_smc(template_email_smc: &mut SubmodelElementCollection, email_values: &Email) {
+    fn map_email_smc(template_email_smc: &mut SubmodelElementCollection, email_values: &Email) -> Result<(), String> {
 
     }
 
-    fn map_ip_communication(template_ip_communication_smc: &mut SubmodelElementCollection, ip_communication_values: &IpCommunication) {
+    fn map_ip_communication(template_ip_communication_smc: &mut SubmodelElementCollection, ip_communication_values: &IpCommunication) -> Result<(), String> {
 
     }
 }
