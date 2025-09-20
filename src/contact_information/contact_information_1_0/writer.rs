@@ -17,7 +17,7 @@ use crate::contact_information::contact_information_1_0::data_structs::phone::Ph
 use crate::contact_information::contact_information_1_0::template_submodel::get_contact_information_1_0;
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::{ACADEMIC_TITLE, CITY_TOWN, COMPANY, CONTACT_INFORMATION_ADDRESS_OF_ADDITIONAL_LINK, CONTACT_INFORMATION_ID, DEPARTMENT, FIRST_NAME, FURTHER_DETAILS_OF_CONTACT, LANGUAGE, MIDDLE_NAMES, NAME_OF_CONTACT, NATIONAL_CODE, PO_BOX, ROLE_OF_CONTACT_PERSON, STATE_COUNTY, STREET, TIMEZONE, TITLE, ZIPCODE, ZIPCODE_OF_PO_BOX};
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::email::EMAIL_ID;
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::fax::FAX_ID;
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::fax::{FAX_ID, FAX_NUMBER, TYPE_OF_FAX_NUMBER};
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::ip_communication::IP_COMMUNICATION_ID;
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::phone::{PHONE_AVAILABLE_TIME, PHONE_ID, TELEPHONE_NUMBER, TYPE_OF_TELEPHONE};
 use crate::submodel_utilities::{convert_hashmap_to_multi_language_text_type_list, get_mutable_mlp, get_mutable_property, get_mutable_smc};
@@ -590,7 +590,7 @@ impl ContactInformationWriter1_0 {
         let optional_telephone_number_mlp = get_mutable_mlp(template_phone_smc.get_mut_value(), &semantic_id);
 
         if optional_telephone_number_mlp.is_some() {
-            let (index, telephone_number_property) = optional_telephone_number_mlp.unwrap();
+            let (_, telephone_number_property) = optional_telephone_number_mlp.unwrap();
 
             telephone_number_property.set_value(convert_hashmap_to_multi_language_text_type_list(phone_values.get_telephone_number()));
         } else {
@@ -641,7 +641,41 @@ impl ContactInformationWriter1_0 {
     }
 
     fn map_fax_smc(template_fax_smc: &mut SubmodelElementCollection, fax_values: &Fax) -> Result<(), String> {
+        //map fax number mlp
+        let key = Key::new(KeyType::GlobalReference, String::from(FAX_NUMBER));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
 
+        let optional_fax_number_mlp = get_mutable_mlp(template_fax_smc.get_mut_value(), &semantic_id);
+
+        if optional_fax_number_mlp.is_some() {
+            let (_, fax_number_mlp) = optional_fax_number_mlp.unwrap();
+
+            fax_number_mlp.set_value(convert_hashmap_to_multi_language_text_type_list(fax_values.get_fax_number()))
+        } else {
+            return Err(String::from("Unable to find template multilanguage property fax number."));
+        }
+
+        //map type of fax number property
+        let optional_type_of_fax_number = fax_values.get_type_of_fax_number();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(TYPE_OF_FAX_NUMBER));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_type_of_fax_number_property = get_mutable_property(template_fax_smc.get_mut_value(), &semantic_id);
+
+        if optional_type_of_fax_number_property.is_some() {
+            let (index, type_of_fax_number_property) = optional_type_of_fax_number_property.unwrap();
+
+            if optional_type_of_fax_number.is_some() {
+                type_of_fax_number_property.set_value(optional_type_of_fax_number.unwrap().get_semantic_id());
+            } else {
+                template_fax_smc.get_mut_value().remove(index);
+            }
+        } else {
+            return Err(String::from("Unable to find template property type of fax number."));
+        }
+
+        Ok(())
     }
 
     fn map_email_smc(template_email_smc: &mut SubmodelElementCollection, email_values: &Email) -> Result<(), String> {
