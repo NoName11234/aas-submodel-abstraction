@@ -6,6 +6,7 @@ use crate::contact_information::contact_information_1_0::data_structs::{email::E
 /// contact the manufacturer or an authorised service provider, e.g. when a maintenance service is required.
 #[derive(PartialEq, Clone)]
 pub struct ContactInformation {
+    id_short: String,
     role_of_contact_person: Option<RoleOfContactPerson>,
     national_code: HashMap<String, String>,
     languages: Vec<Language>,
@@ -33,8 +34,9 @@ pub struct ContactInformation {
 
 impl ContactInformation {
     /// Creates a new empty instance of the struct.
-    pub fn new() -> ContactInformation {
+    pub fn new(id_short: String) -> ContactInformation {
         ContactInformation {
+            id_short,
             role_of_contact_person: None,
             national_code: HashMap::new(),
             languages: Vec::new(),
@@ -59,6 +61,14 @@ impl ContactInformation {
             further_details_of_contact: HashMap::new(),
             address_of_aditional_link: None
         }
+    }
+    
+    pub fn set_id_short(&mut self, id_short: String) {
+        self.id_short = id_short;
+    }
+    
+    pub fn get_id_short(&self) -> &String {
+        &self.id_short
     }
 
     pub fn set_role_of_contact_person(&mut self, role_of_contact_person: RoleOfContactPerson) {
