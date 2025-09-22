@@ -34,6 +34,14 @@ impl IpCommunication {
         &self.address_of_additional_link
     }
 
+    pub fn set_type_of_communication(&mut self, type_of_communication: String) {
+        self.type_of_communication = Some(type_of_communication);
+    }
+
+    pub fn get_type_of_communication(&self) -> Option<&String> {
+        self.type_of_communication.as_ref()
+    }
+
     pub fn set_available_time(&mut self, available_time: HashMap<String, String>) {
         self.available_time = available_time;
     }
