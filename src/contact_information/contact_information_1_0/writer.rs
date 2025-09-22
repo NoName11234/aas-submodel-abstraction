@@ -16,7 +16,7 @@ use crate::contact_information::contact_information_1_0::data_structs::ip_commun
 use crate::contact_information::contact_information_1_0::data_structs::phone::Phone;
 use crate::contact_information::contact_information_1_0::template_submodel::get_contact_information_1_0;
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::{ACADEMIC_TITLE, CITY_TOWN, COMPANY, CONTACT_INFORMATION_ADDRESS_OF_ADDITIONAL_LINK, CONTACT_INFORMATION_ID, DEPARTMENT, FIRST_NAME, FURTHER_DETAILS_OF_CONTACT, LANGUAGE, MIDDLE_NAMES, NAME_OF_CONTACT, NATIONAL_CODE, PO_BOX, ROLE_OF_CONTACT_PERSON, STATE_COUNTY, STREET, TIMEZONE, TITLE, ZIPCODE, ZIPCODE_OF_PO_BOX};
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::email::EMAIL_ID;
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::email::{EMAIL_ADDRESS, EMAIL_ID, PUBLIC_KEY, TYPE_OF_EMAIL_ADDRESS, TYPE_OF_PUBLIC_KEY};
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::fax::{FAX_ID, FAX_NUMBER, TYPE_OF_FAX_NUMBER};
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::ip_communication::IP_COMMUNICATION_ID;
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::phone::{PHONE_AVAILABLE_TIME, PHONE_ID, TELEPHONE_NUMBER, TYPE_OF_TELEPHONE};
@@ -679,7 +679,81 @@ impl ContactInformationWriter1_0 {
     }
 
     fn map_email_smc(template_email_smc: &mut SubmodelElementCollection, email_values: &Email) -> Result<(), String> {
+        //map email address property
+        let key = Key::new(KeyType::GlobalReference, String::from(EMAIL_ADDRESS));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
 
+        let optional_email_address_property = get_mutable_property(template_email_smc.get_mut_value(), &semantic_id);
+
+        if optional_email_address_property.is_some() {
+            let (_, email_address_property) = optional_email_address_property.unwrap();
+
+            email_address_property.set_value(email_values.get_email_address().clone())
+        } else {
+            return Err(String::from("Unable to find template property email address."));
+        }
+
+        //map public key mlp
+        let public_key_hashmap = email_values.get_public_key();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(PUBLIC_KEY));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_public_key_mlp = get_mutable_mlp(template_email_smc.get_mut_value(), &semantic_id);
+
+        if optional_public_key_mlp.is_some() {
+            let (index, public_key_mlp) = optional_public_key_mlp.unwrap();
+
+            if public_key_hashmap.is_empty() {
+                template_email_smc.get_mut_value().remove(index);
+            } else {
+                public_key_mlp.set_value(convert_hashmap_to_multi_language_text_type_list(public_key_hashmap));
+            }
+        } else {
+            return Err(String::from("Unable to find template multilanguage property public key."));
+        }
+
+        //map type of email address property
+        let optional_type_of_email_address = email_values.get_type_of_email_address();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(TYPE_OF_EMAIL_ADDRESS));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_type_of_email_address_property = get_mutable_property(template_email_smc.get_mut_value(), &semantic_id);
+
+        if optional_type_of_email_address_property.is_some() {
+            let (index, type_of_email_address_property) = optional_type_of_email_address_property.unwrap();
+
+            if optional_type_of_email_address.is_some() {
+                type_of_email_address_property.set_value(optional_type_of_email_address.unwrap().get_semantic_id());
+            } else {
+                template_email_smc.get_mut_value().remove(index);
+            }
+        } else {
+            return Err(String::from("Unable to find template property type of email address."));
+        }
+
+        //map type of public key mlp
+        let type_of_public_key_hashmap = email_values.get_type_of_public_key();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(TYPE_OF_PUBLIC_KEY));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_type_of_public_key_mlp = get_mutable_mlp(template_email_smc.get_mut_value(), &semantic_id);
+
+        if optional_type_of_public_key_mlp.is_some() {
+            let (index, type_of_public_key_mlp) = optional_type_of_public_key_mlp.unwrap();
+
+            if type_of_public_key_hashmap.is_empty() {
+                template_email_smc.get_mut_value().remove(index);
+            } else {
+                type_of_public_key_mlp.set_value(convert_hashmap_to_multi_language_text_type_list(type_of_public_key_hashmap));
+            }
+        } else {
+            return Err(String::from("Unable to find template multilanguage property type of public key."));
+        }
+
+        Ok(())
     }
 
     fn map_ip_communication(template_ip_communication_smc: &mut SubmodelElementCollection, ip_communication_values: &IpCommunication) -> Result<(), String> {
