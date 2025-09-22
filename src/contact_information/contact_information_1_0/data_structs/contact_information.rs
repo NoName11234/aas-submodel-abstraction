@@ -1,10 +1,10 @@
 use std::collections::HashMap;
-
+use serde::{Deserialize, Serialize};
 use crate::contact_information::contact_information_1_0::data_structs::{email::Email, fax::Fax, ip_communication::IpCommunication, phone::Phone};
 
 /// A struct representing a submodel element collection of type contact information which contains information on how to
 /// contact the manufacturer or an authorised service provider, e.g. when a maintenance service is required.
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub struct ContactInformation {
     id_short: String,
     role_of_contact_person: Option<RoleOfContactPerson>,
@@ -393,7 +393,7 @@ impl ContactInformation {
 }
 
 ///The function of a contact person in a process.
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub enum RoleOfContactPerson {
     AdministrativeContact,
     CommercialContact,
@@ -425,7 +425,7 @@ impl RoleOfContactPerson {
     }
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub struct Language {
     short_id: String,
     language: String

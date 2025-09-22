@@ -4,4 +4,5 @@ version = "1.0.0"
 edition = "2024"
 
 [dependencies]
-aas-model-rs = { git = "https://github.com/NoName11234/aas-model-rs" }
+aas-model-rs = { git = "https://github.com/NoName11234/aas-model-rs", branch = "releases/1.2.0" }
+serde = {version = "1.0", features = ["derive"]}

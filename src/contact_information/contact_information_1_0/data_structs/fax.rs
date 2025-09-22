@@ -1,6 +1,7 @@
 use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub struct Fax {
     fax_number: HashMap<String, String>,
     type_of_fax_number: Option<TypeOfFaxNumber>
@@ -39,7 +40,7 @@ impl Fax {
     }
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub enum TypeOfFaxNumber {
     Office,
     Secretary,

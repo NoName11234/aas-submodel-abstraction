@@ -1,6 +1,7 @@
 use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub struct Email {
     email_address: String,
     public_key: HashMap<String, String>,
@@ -67,7 +68,7 @@ impl Email {
     }
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub enum TypeOfEmailAddress {
     Office,
     Secretary,

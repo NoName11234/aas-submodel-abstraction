@@ -1,6 +1,7 @@
 use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub struct Phone {
     telephone_number: HashMap<String, String>,
     type_of_phone: Option<TypeOfTelephone>,
@@ -57,7 +58,7 @@ impl Phone {
     }
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize)]
 pub enum TypeOfTelephone {
     Office,
     OfficeMobile,
