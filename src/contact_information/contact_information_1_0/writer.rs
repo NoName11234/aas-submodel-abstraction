@@ -18,7 +18,7 @@ use crate::contact_information::contact_information_1_0::template_submodel::get_
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::{ACADEMIC_TITLE, CITY_TOWN, COMPANY, CONTACT_INFORMATION_ADDRESS_OF_ADDITIONAL_LINK, CONTACT_INFORMATION_ID, DEPARTMENT, FIRST_NAME, FURTHER_DETAILS_OF_CONTACT, LANGUAGE, MIDDLE_NAMES, NAME_OF_CONTACT, NATIONAL_CODE, PO_BOX, ROLE_OF_CONTACT_PERSON, STATE_COUNTY, STREET, TIMEZONE, TITLE, ZIPCODE, ZIPCODE_OF_PO_BOX};
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::email::{EMAIL_ADDRESS, EMAIL_ID, PUBLIC_KEY, TYPE_OF_EMAIL_ADDRESS, TYPE_OF_PUBLIC_KEY};
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::fax::{FAX_ID, FAX_NUMBER, TYPE_OF_FAX_NUMBER};
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::ip_communication::IP_COMMUNICATION_ID;
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::ip_communication::{IP_COMMUNICATION_ADDRESS_OF_ADDITIONAL_LINK, IP_COMMUNICATION_AVAILABLE_TIME, IP_COMMUNICATION_ID, TYPE_OF_COMMUNICATION};
 use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::phone::{PHONE_AVAILABLE_TIME, PHONE_ID, TELEPHONE_NUMBER, TYPE_OF_TELEPHONE};
 use crate::submodel_utilities::{convert_hashmap_to_multi_language_text_type_list, get_mutable_mlp, get_mutable_property, get_mutable_smc};
 
@@ -757,6 +757,60 @@ impl ContactInformationWriter1_0 {
     }
 
     fn map_ip_communication(template_ip_communication_smc: &mut SubmodelElementCollection, ip_communication_values: &IpCommunication) -> Result<(), String> {
+        //map address of additional link property
+        let key = Key::new(KeyType::GlobalReference, String::from(IP_COMMUNICATION_ADDRESS_OF_ADDITIONAL_LINK));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
 
+        let optional_address_of_additional_link_property = get_mutable_property(template_ip_communication_smc.get_mut_value(), &semantic_id);
+
+        if optional_address_of_additional_link_property.is_some() {
+            let (_, address_of_additional_link_mlp) = optional_address_of_additional_link_property.unwrap();
+
+            address_of_additional_link_mlp.set_value(ip_communication_values.get_address_of_additional_link().clone());
+        } else {
+            return Err(String::from("Unable to find template property address of additional link."));
+        }
+
+        //map type of communication property
+        let optional_type_of_communication = ip_communication_values.get_type_of_communication();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(TYPE_OF_COMMUNICATION));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_type_of_communication_property = get_mutable_property(template_ip_communication_smc.get_mut_value(), &semantic_id);
+
+        if optional_type_of_communication_property.is_some() {
+            let (index, type_of_communication_property) = optional_type_of_communication_property.unwrap();
+
+            if optional_type_of_communication.is_some() {
+                type_of_communication_property.set_value(optional_type_of_communication.unwrap().clone());
+            } else {
+                template_ip_communication_smc.get_mut_value().remove(index);
+            }
+        } else {
+            return Err(String::from("Unable to find template property type of communication."));
+        }
+
+        //map available time mlp
+        let available_time_hashmap = ip_communication_values.get_available_time();
+
+        let key = Key::new(KeyType::GlobalReference, String::from(IP_COMMUNICATION_AVAILABLE_TIME));
+        let semantic_id = Reference::new(ReferenceType::ExternalReference, vec![key]);
+
+        let optional_available_time_mlp = get_mutable_mlp(template_ip_communication_smc.get_mut_value(), &semantic_id);
+
+        if optional_available_time_mlp.is_some() {
+            let (index, available_time_mlp) = optional_available_time_mlp.unwrap();
+
+            if available_time_hashmap.is_empty() {
+                template_ip_communication_smc.get_mut_value().remove(index);
+            } else {
+                available_time_mlp.set_value(convert_hashmap_to_multi_language_text_type_list(available_time_hashmap));
+            }
+        } else {
+            return Err(String::from("Unable to find template multilanguage property available time."));
+        }
+
+        Ok(())
     }
 }
