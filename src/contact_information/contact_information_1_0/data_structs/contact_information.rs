@@ -1,6 +1,6 @@
-use std::{collections::HashMap};
+use std::collections::HashMap;
 
-use crate::contact_information::contact_information_1_0::data_structs::{email::Email, fax::Fax, ip_communication::{self, IpCommunication}, phone::Phone};
+use crate::contact_information::contact_information_1_0::data_structs::{email::Email, fax::Fax, ip_communication::IpCommunication, phone::Phone};
 
 /// A struct representing a submodel element collection of type contact information which contains information on how to
 /// contact the manufacturer or an authorised service provider, e.g. when a maintenance service is required.

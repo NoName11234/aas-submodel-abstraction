@@ -1,3 +1,9 @@
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::email::{EMAIL_ADDRESS, EMAIL_ID, PUBLIC_KEY, TYPE_OF_EMAIL_ADDRESS, TYPE_OF_PUBLIC_KEY};
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::fax::{FAX_ID, FAX_NUMBER, TYPE_OF_FAX_NUMBER};
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::ip_communication::{IP_COMMUNICATION_ADDRESS_OF_ADDITIONAL_LINK, IP_COMMUNICATION_AVAILABLE_TIME, IP_COMMUNICATION_ID, TYPE_OF_COMMUNICATION};
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::phone::{PHONE_AVAILABLE_TIME, PHONE_ID, TELEPHONE_NUMBER, TYPE_OF_TELEPHONE};
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::{ACADEMIC_TITLE, CITY_TOWN, COMPANY, CONTACT_INFORMATION_ADDRESS_OF_ADDITIONAL_LINK, CONTACT_INFORMATION_ID, DEPARTMENT, FIRST_NAME, FURTHER_DETAILS_OF_CONTACT, LANGUAGE, MIDDLE_NAMES, NAME_OF_CONTACT, NATIONAL_CODE, PO_BOX, ROLE_OF_CONTACT_PERSON, STATE_COUNTY, STREET, TIMEZONE, TITLE, ZIPCODE, ZIPCODE_OF_PO_BOX};
+use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::SUBMODEL_SEMANTIC_ID;
 use aas_model_rs::enumerations::data_type_def_xsd::DataTypeDefXsd;
 use aas_model_rs::enumerations::interface_enumerations::submodel_element::SubmodelElement;
 use aas_model_rs::enumerations::key_type::KeyType;
@@ -18,13 +24,6 @@ use aas_model_rs::traits::has_semantics::THasSemantics;
 use aas_model_rs::traits::identifiable::TIdentifiable;
 use aas_model_rs::traits::qualifiable::TQualifiable;
 use aas_model_rs::traits::referable::TReferable;
-use crate::contact_information::contact_information_1_0::data_structs::email::Email;
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::{ACADEMIC_TITLE, CITY_TOWN, COMPANY, CONTACT_INFORMATION_ADDRESS_OF_ADDITIONAL_LINK, CONTACT_INFORMATION_ID, DEPARTMENT, FIRST_NAME, FURTHER_DETAILS_OF_CONTACT, LANGUAGE, MIDDLE_NAMES, NAME_OF_CONTACT, NATIONAL_CODE, PO_BOX, ROLE_OF_CONTACT_PERSON, STATE_COUNTY, STREET, TIMEZONE, TITLE, ZIPCODE, ZIPCODE_OF_PO_BOX};
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::email::{EMAIL_ADDRESS, EMAIL_ID, PUBLIC_KEY, TYPE_OF_EMAIL_ADDRESS, TYPE_OF_PUBLIC_KEY};
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::fax::{FAX_ID, FAX_NUMBER, TYPE_OF_FAX_NUMBER};
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::ip_communication::{IP_COMMUNICATION_ADDRESS_OF_ADDITIONAL_LINK, IP_COMMUNICATION_AVAILABLE_TIME, IP_COMMUNICATION_ID, TYPE_OF_COMMUNICATION};
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::contact_information::phone::{PHONE_AVAILABLE_TIME, PHONE_ID, TELEPHONE_NUMBER, TYPE_OF_TELEPHONE};
-use crate::contact_information::contact_information_1_0::template_submodel::semantic_ids::SUBMODEL_SEMANTIC_ID;
 
 pub mod semantic_ids {
     pub const SUBMODEL_SEMANTIC_ID: &str = "https://admin-shell.io/zvei/nameplate/1/0/ContactInformations";

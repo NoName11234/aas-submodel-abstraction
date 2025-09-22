@@ -7,7 +7,6 @@ use aas_model_rs::structs::key::Key;
 use aas_model_rs::structs::reference::Reference;
 use aas_model_rs::structs::submodel::Submodel;
 use aas_model_rs::structs::submodel_element_collection::SubmodelElementCollection;
-use aas_model_rs::traits::has_semantics::THasSemantics;
 use aas_model_rs::traits::referable::TReferable;
 use crate::contact_information::contact_information_1_0::data_structs::contact_information::ContactInformation;
 use crate::contact_information::contact_information_1_0::data_structs::email::Email;
